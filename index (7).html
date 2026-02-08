@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxFit - Tu Nutrición Inteligente</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #FFD700;
+            --dark-gold: #E6C200;
+            --black: #1a1a1a;
+            --gray: #757575;
+            --light-gray: #f5f5f5;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .background-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
+            opacity: 0.03;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape1 {
+            width: 400px;
+            height: 400px;
+            top: -200px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .shape2 {
+            width: 300px;
+            height: 300px;
+            bottom: -150px;
+            left: -100px;
+            animation-delay: 5s;
+        }
+
+        .shape3 {
+            width: 250px;
+            height: 250px;
+            top: 50%;
+            left: 50%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold) 0%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 25px;
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .nav-tab {
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            color: var(--white);
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-tab:hover::before {
+            left: 100%;
+        }
+
+        .nav-tab.active {
+            background: var(--gold);
+            color: var(--black);
+            border-color: var(--gold);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.15);
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card-icon {
+            font-size: 1.2em;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 12px;
+            color: var(--white);
+            font-size: 1em;
+            font-family: 'Manrope', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .form-select option {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 18px 40px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
+            border: none;
+            border-radius: 15px;
+            color: var(--black);
+            font-weight: 700;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Results Display */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .result-item {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .result-item:hover {
+            transform: scale(1.05);
+            border-color: var(--gold);
+        }
+
+        .result-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .result-label {
+            color: var(--white);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        /* Progress Bars */
+        .progress-container {
+            margin: 30px 0;
+        }
+
+        .progress-item {
+            margin-bottom: 25px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-label {
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .progress-value {
+            color: var(--white);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--dark-gold) 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-green {
+            background: linear-gradient(90deg, #4CAF50 0%, #45a049 100%);
+        }
+
+        .progress-yellow {
+            background: linear-gradient(90deg, #FFC107 0%, #FFB300 100%);
+        }
+
+        .progress-red {
+            background: linear-gradient(90deg, #f44336 0%, #da190b 100%);
+        }
+
+        /* Food Selection */
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .food-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .food-item:hover {
+            border-color: var(--gold);
+            background: rgba(255, 215, 0, 0.1);
+            transform: scale(1.05);
+        }
+
+        .food-item.selected {
+            border-color: var(--gold);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0.1) 100%);
+        }
+
+        .food-emoji {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .food-name {
+            font-weight: 600;
+            color: var(--white);
+            font-size: 0.9em;
+        }
+
+        /* Meal Display */
+        .meal-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.08) 0%, rgba(255, 215, 0, 0.03) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .meal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .meal-time {
+            font-weight: 700;
+            color: var(--gold);
+            font-size: 1.2em;
+        }
+
+        .delete-btn {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #f44336;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #f44336;
+            color: white;
+        }
+
+        .meal-foods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .meal-food-tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: var(--white);
+        }
+
+        /* Water Tracker */
+        .water-tracker {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .water-glasses {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .water-glass {
+            width: 60px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .water-glass:hover {
+            transform: scale(1.1);
+            border-color: var(--gold);
+        }
+
+        .water-glass.filled {
+            background: linear-gradient(180deg, transparent 0%, rgba(33, 150, 243, 0.6) 100%);
+            border-color: #2196F3;
+        }
+
+        .water-glass.filled::after {
+            content: '💧';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5em;
+        }
+
+        /* Contact Section */
+        .contact-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3);
+        }
+
+        .contact-icon {
+            font-size: 2em;
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(33, 150, 243, 0.1);
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            color: var(--white);
+        }
+
+        .warning-box {
+            background: rgba(255, 152, 0, 0.1);
+            border-left: 4px solid #FF9800;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            color: var(--white);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 1.8em;
+            }
+
+            .social-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-tabs {
+                flex-wrap: nowrap;
+                overflow-x: scroll;
+                gap: 8px;
+            }
+
+            .nav-tab {
+                padding: 12px 20px;
+                font-size: 0.85em;
+                min-width: fit-content;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .food-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background-decoration">
+        <div class="floating-shape shape1"></div>
+        <div class="floating-shape shape2"></div>
+        <div class="floating-shape shape3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="logo">LUXFIT</h1>
+            <div class="social-links">
+                <a href="https://www.instagram.com/lux_fit24/" target="_blank" class="social-btn">
+                    <span>📸</span> @lux_fit24
+                </a>
+                <a href="https://wa.me/" target="_blank" class="social-btn" id="whatsappBtn">
+                    <span>💬</span> WhatsApp
+                </a>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <div class="nav-tab active" data-tab="perfil">👤 Mi Perfil</div>
+            <div class="nav-tab" data-tab="sobremi">👋 Sobre Mí</div>
+            <div class="nav-tab" data-tab="reto">🔥 Reto 21 Días</div>
+            <div class="nav-tab" data-tab="platos">🍽️ Crear Platos</div>
+            <div class="nav-tab" data-tab="seguimiento">📅 Hoy</div>
+            <div class="nav-tab" data-tab="agua">💧 Agua</div>
+            <div class="nav-tab" data-tab="progreso">📊 Progreso</div>
+            <div class="nav-tab" data-tab="suplementos">💊 Suplementos</div>
+            <div class="nav-tab" data-tab="contacto">📞 Contacto</div>
+        </nav>
+
+        <!-- PERFIL Section -->
+        <section id="perfil" class="content-section active">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="card-icon">👤</span>
+                    Mi Perfil
+                </h2>
+                
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label class="form-label">Peso (kg)</label>
+                        <input type="number" class="form-input" id="peso" placeholder="Ej: 70" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Estatura (cm)</label>
+                        <input type="number" class="form-input" id="estatura" placeholder="Ej: 165" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Edad (años)</label>
+                        <input type="number" class="form-input" id="edad" placeholder="Ej: 30" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Nivel de Actividad</label>
+                        <select class="form-select" id="actividad" required>
+                            <option value="">Selecciona...</option>
+                            <option value="1.2">Sedentario (poco o ningún ejercicio)</option>
+                            <option value="1.375">Ligero (ejercicio 1-3 días/semana)</option>
+                            <option value="1.55">Moderado (3 o 4 días a la semana)</option>
+                            <option value="1.725">Activo (5 o más días a la semana)</option>
+                            <option value="1.9">Muy Activo (ejercicio intenso diario)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Objetivo</label>
+                        <select class="form-select" id="objetivo" required>
+                            <option value="">Selecciona...</option>
+                            <option value="deficit">Perder grasa</option>
+                            <option value="mantener">Mantener peso</option>
+                            <option value="surplus">Ganar músculo</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn">Calcular Mis Macros</button>
+                </form>
+
+                <div id="resultsContainer" class="hidden">
+                    <h3 class="card-title" style="margin-top: 40px;">
+                        <span class="card-icon">✨</span>
+                        Tus Necesidades Diarias
+                    </h3>
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <div class="result-value" id="proteinasResult">0</div>
+                            <div class="result-label">Proteínas (g)</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value" id="carbosResult">0</div>
+                            <div class="result-label">Carbohidratos (g)</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value" id="grasasResult">0</div>
+                            <div class="result-label">Grasas (g)</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value" id="vegetalesResult">0</div>
+                            <div class="result-label">Vegetales (g)</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value" id="aguaResult">0</div>
+                            <div class="result-label">Agua (ml)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOBRE MÍ Section -->
+        <section id="sobremi" class="content-section">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="card-icon">👋</span>
+                    Sobre Mí
+                </h2>
+
+                <!-- FOTO: Tu foto actual -->
+                <div style="text-align: center; margin: 30px 0;">
+                    <img src="https://i.imgur.com/vsHNq4X.jpeg" alt="Lucía Docampo" style="width: 200px; height: 200px; border-radius: 50%; border: 4px solid var(--gold); object-fit: cover; box-shadow: 0 10px 40px rgba(255, 215, 0, 0.3);">
+                </div>
+
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 2em; text-align: center; color: var(--gold); margin: 30px 0 20px;">
+                    Lucía Docampo
+                </h3>
+                <p style="text-align: center; color: var(--gray); font-size: 1.1em; margin-bottom: 40px;">
+                    Coach de Nutrición y Entrenamiento Personal
+                </p>
+
+                <!-- Tu Historia -->
+                <div style="font-size: 1.1em; line-height: 1.8; margin-bottom: 30px;">
+                    <p style="margin-bottom: 20px;">
+                        Soy Lucía Docampo, y sé exactamente cómo te sientes 💪
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        Porque yo también estuve ahí.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        Siempre fui activa, deportista, llena de energía. Hasta que dejé de serlo. Me volví sedentaria, comía mal y no me reconocía cuando me miraba al espejo.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        A principios de 2024 dije: <strong style="color: var(--gold);">BASTA</strong>.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        Me apunté a entrenamiento funcional. Mi coach me retó a participar en un programa de transformación de 21 días. Dudé. Tenía miedo de fracasar. Pero lo hice.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        Y <strong style="color: var(--gold);">cambió mi vida</strong>.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        21 días después había perdido peso y volumen, sí. Pero lo más importante: recuperé mi confianza, mi energía, mis ganas de vivir. No gané los 500$ del premio, pero gané <strong style="color: var(--gold);">MI VIDA</strong> de vuelta.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        Esa transformación fue tan poderosa que me formé profesionalmente en nutrición y entrenamiento personal, y ahora dedico mi vida a ayudar a otras personas a conseguir lo mismo.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        Porque SÍ es posible. Tú también puedes transformarte. Solo necesitas el método correcto y alguien que crea en ti tanto como mi coach creyó en mí.
+                    </p>
+                    <p style="margin-bottom: 20px; text-align: center; font-size: 1.2em; color: var(--gold);">
+                        ¿Empezamos tu transformación juntas? 🔥
+                    </p>
+                </div>
+
+                <!-- Mi Formación -->
+                <h3 class="card-title" style="margin-top: 40px;">
+                    <span class="card-icon">📚</span>
+                    Mi Formación
+                </h3>
+                <div class="results-grid" style="grid-template-columns: 1fr;">
+                    <div class="result-item" style="text-align: left; padding: 20px;">
+                        <div style="margin-bottom: 15px;">✅ Certificación en Nutrición y Entrenamiento Personal</div>
+                        <div style="margin-bottom: 15px;">✅ Especialización en Retos de Transformación</div>
+                        <div>✅ Experiencia personal en transformación corporal</div>
+                    </div>
+                </div>
+
+                <!-- Mi Transformación Completa -->
+                <div style="text-align: center; margin: 50px 0;">
+                    <h3 class="card-title">
+                        <span class="card-icon">✨</span>
+                        Mi Transformación
+                    </h3>
+                    <p style="margin-bottom: 30px; color: var(--white); font-size: 1.1em;">
+                        Así fue mi cambio desde que decidí transformar mi vida
+                    </p>
+                    <img src="https://i.imgur.com/1zhoxup.jpeg" alt="Transformación Lucía - Antes y Ahora" style="max-width: 100%; height: auto; border-radius: 15px; border: 3px solid var(--gold); box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3);">
+                </div>
+
+                <!-- Mi Enfoque -->
+                <h3 class="card-title" style="margin-top: 40px;">
+                    <span class="card-icon">💡</span>
+                    Mi Enfoque
+                </h3>
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">💪</div>
+                        <div style="color: var(--gold); font-weight: 700; margin-bottom: 10px;">Transformación Real</div>
+                        <div style="color: var(--white); font-size: 0.9em;">Resultados sostenibles a largo plazo</div>
+                    </div>
+                    <div class="result-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">🍽️</div>
+                        <div style="color: var(--gold); font-weight: 700; margin-bottom: 10px;">Nutrición Flexible</div>
+                        <div style="color: var(--white); font-size: 0.9em;">Sin dietas extremas ni prohibiciones</div>
+                    </div>
+                    <div class="result-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">🔥</div>
+                        <div style="color: var(--gold); font-weight: 700; margin-bottom: 10px;">Entrenamiento Adaptado</div>
+                        <div style="color: var(--white); font-size: 0.9em;">A tu nivel y disponibilidad</div>
+                    </div>
+                    <div class="result-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">❤️</div>
+                        <div style="color: var(--gold); font-weight: 700; margin-bottom: 10px;">Acompañamiento</div>
+                        <div style="color: var(--white); font-size: 0.9em;">Personalizado y cercano</div>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div style="text-align: center; margin-top: 50px;">
+                    <h3 style="color: var(--gold); margin-bottom: 20px; font-size: 1.4em;">
+                        ¿Lista para tu transformación?
+                    </h3>
+                    <a href="#contacto" class="btn" onclick="switchTab('contacto')">
+                        Trabajemos Juntas
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- RETO 21 DÍAS Section -->
+        <section id="reto" class="content-section">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="card-icon">🔥</span>
+                    Reto de Transformación 21 Días
+                </h2>
+
+                <p style="font-size: 1.3em; line-height: 1.8; margin-bottom: 30px; text-align: center;">
+                    <strong style="color: var(--gold);">Tu Sistema Completo de Cambio Real</strong>
+                </p>
+
+                <!-- Foto de Transformación 21 Días -->
+                <div style="text-align: center; margin: 40px 0;">
+                    <img src="https://i.imgur.com/lRVos60.jpeg" alt="Transformación 21 días - Día 1 vs Día 21" style="max-width: 100%; height: auto; border-radius: 15px; border: 3px solid var(--gold); box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3);">
+                    <p style="margin-top: 20px; color: var(--gold); font-size: 1.1em; font-weight: 600;">
+                        ✨ Resultados reales en solo 21 días
+                    </p>
+                </div>
+
+                <!-- Precio y Fecha -->
+                <div style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.05) 100%); border: 2px solid var(--gold); border-radius: 20px; padding: 30px; text-align: center; margin: 40px 0;">
+                    <div style="font-size: 2.5em; font-weight: 700; color: var(--gold); margin-bottom: 15px;">
+                        160€
+                    </div>
+                    <div style="font-size: 1.2em; color: var(--white); margin-bottom: 20px;">
+                        TODO INCLUIDO
+                    </div>
+                    <div style="font-size: 1.1em; color: var(--white); margin-bottom: 10px;">
+                        📅 <strong>PRÓXIMO INICIO:</strong> 2 DE MARZO
+                    </div>
+                    <div style="font-size: 1.1em; color: #FF9800; font-weight: 700;">
+                        ⚠️ PLAZAS LIMITADAS
+                    </div>
+                </div>
+
+                <!-- ¿Qué Recibes? -->
+                <h3 class="card-title" style="margin-top: 40px;">
+                    <span class="card-icon">✨</span>
+                    ¿Qué Recibes?
+                </h3>
+
+                <!-- Nutrición -->
+                <div class="meal-card" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);">
+                    <h4 style="color: var(--gold); font-size: 1.3em; margin-bottom: 15px;">🍽️ NUTRICIÓN PERSONALIZADA</h4>
+                    <div style="line-height: 1.8;">
+                        ✅ Plan de alimentación adaptado a ti<br>
+                        ✅ Recetas deliciosas y fáciles<br>
+                        ✅ Lista de la compra semanal
+                    </div>
+                </div>
+
+                <!-- Entrenamiento -->
+                <div class="meal-card" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);">
+                    <h4 style="color: var(--gold); font-size: 1.3em; margin-bottom: 15px;">💪 ENTRENAMIENTO A TU MEDIDA</h4>
+                    <div style="line-height: 1.8;">
+                        ✅ 3 niveles disponibles:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;• Rutinas para CASA (sin equipamiento)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;• Rutinas para GIMNASIO<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;• Adaptadas HOMBRE o MUJER<br>
+                        ✅ Videos explicativos de cada ejercicio
+                    </div>
+                </div>
+
+                <!-- Suplementación -->
+                <div class="meal-card" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);">
+                    <h4 style="color: var(--gold); font-size: 1.3em; margin-bottom: 15px;">💊 SUPLEMENTACIÓN ESTRATÉGICA INCLUIDA</h4>
+                    <div style="line-height: 1.8;">
+                        ✅ Pack nutricional completo (21 días)<br>
+                        ✅ Potencia tu transformación<br>
+                        ✅ Alta calidad y efectividad probada
+                    </div>
+                </div>
+
+                <!-- Soporte -->
+                <div class="meal-card" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);">
+                    <h4 style="color: var(--gold); font-size: 1.3em; margin-bottom: 15px;">👥 SOPORTE Y MOTIVACIÓN</h4>
+                    <div style="line-height: 1.8;">
+                        ✅ Grupo privado de WhatsApp<br>
+                        ✅ Acceso directo a mí todos los días<br>
+                        ✅ Motivación + consejos diarios<br>
+                        ✅ Comunidad de personas como tú
+                    </div>
+                </div>
+
+                <!-- Seguimiento -->
+                <div class="meal-card" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);">
+                    <h4 style="color: var(--gold); font-size: 1.3em; margin-bottom: 15px;">📊 SEGUIMIENTO PERSONALIZADO</h4>
+                    <div style="line-height: 1.8;">
+                        ✅ Ajusto tu plan según tu progreso<br>
+                        ✅ Resuelvo todas tus dudas<br>
+                        ✅ Celebramos tus logros juntas
+                    </div>
+                </div>
+
+                <!-- Por Qué Funciona -->
+                <div style="margin: 50px 0;">
+                    <h3 class="card-title">
+                        <span class="card-icon">🎯</span>
+                        ¿Por Qué Funciona?
+                    </h3>
+                    <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 20px;">
+                        No es una dieta más. Es un sistema completo que combina nutrición, entrenamiento y suplementación estratégica.
+                    </p>
+                    <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 10px;">
+                        <strong style="color: var(--gold);">En solo 21 días verás:</strong>
+                    </p>
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <div style="font-size: 3em;">📉</div>
+                            <div style="color: var(--white); margin-top: 10px;">Pérdida de grasa visible</div>
+                        </div>
+                        <div class="result-item">
+                            <div style="font-size: 3em;">⚡</div>
+                            <div style="color: var(--white); margin-top: 10px;">Más energía y vitalidad</div>
+                        </div>
+                        <div class="result-item">
+                            <div style="font-size: 3em;">💪</div>
+                            <div style="color: var(--white); margin-top: 10px;">Mejor forma física</div>
+                        </div>
+                        <div class="result-item">
+                            <div style="font-size: 3em;">✨</div>
+                            <div style="color: var(--white); margin-top: 10px;">Hábitos que perduran</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Principal -->
+                <div style="text-align: center; margin: 50px 0;">
+                    <a href="#contacto" class="btn" onclick="switchTab('contacto')" style="font-size: 1.3em; padding: 25px 60px;">
+                        QUIERO MI TRANSFORMACIÓN
+                    </a>
+                </div>
+
+                <!-- Info Adicional -->
+                <div class="info-box" style="margin-top: 30px;">
+                    <strong style="font-size: 1.1em;">💬 ¿Necesitas más suplementos?</strong><br>
+                    Hay opciones adicionales disponibles para maximizar resultados. ¡Consúltame!
+                </div>
+            </div>
+        </section>
+
+        <!-- CREAR PLATOS Section -->
+        <section id="platos" class="content-section">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="card-icon">🍽️</span>
+                    Crear Plato
+                </h2>
+
+                <div class="info-box">
+                    Selecciona los alimentos para tu plato. La app calculará automáticamente las cantidades ideales según tus macros.
+                </div>
+
+                <form id="platoForm">
+                    <div class="form-group">
+                        <label class="form-label">Nombre del Plato</label>
+                        <input type="text" class="form-input" id="nombrePlato" placeholder="Ej: Almuerzo - Pollo con arroz" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Tipo de Comida</label>
+                        <select class="form-select" id="tipoComida" required>
+                            <option value="">Selecciona...</option>
+                            <option value="desayuno">🌅 Desayuno</option>
+                            <option value="almuerzo">🍽️ Almuerzo / Comida</option>
+                            <option value="cena">🌙 Cena</option>
+                            <option value="snack">🍎 Snack</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Selecciona Alimentos</label>
+                        
+                        <h4 style="color: var(--gold); margin: 20px 0 10px;">🍗 Proteínas</h4>
+                        <div class="food-grid" id="proteinas-grid"></div>
+
+                        <h4 style="color: var(--gold); margin: 20px 0 10px;">🍚 Carbohidratos</h4>
+                        <div class="food-grid" id="carbohidratos-grid"></div>
+
+                        <h4 style="color: var(--gold); margin: 20px 0 10px;">🥦 Vegetales</h4>
+                        <div class="food-grid" id="vegetales-grid"></div>
+
+                        <h4 style="color: var(--gold); margin: 20px 0 10px;">🥑 Grasas Saludables</h4>
+                        <div class="food-grid" id="grasas-grid"></div>
+
+                        <h4 style="color: var(--gold); margin: 20px 0 10px;">🍎 Snacks</h4>
+                        <div class="food-grid" id="snacks-grid"></div>
+                    </div>
+
+                    <button type="submit" class="btn">Crear Plato y Ver Cantidades</button>
+                </form>
+
+                <div id="platoResultado" class="hidden" style="margin-top: 40px;">
+                    <h3 class="card-title">
+                        <span class="card-icon">✅</span>
+                        Tu Plato: <span id="platoNombreDisplay"></span>
+                    </h3>
+                    <div id="platoAlimentos"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEGUIMIENTO Section -->
+        <section id="seguimiento" class="content-section">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="card-icon">📅</span>
+                    Seguimiento del Día
+                </h2>
+
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span class="progress-label">🍗 Proteínas</span>
+                            <span class="progress-value"><span id="proteinasConsumed">0</span>g / <span id="proteinasGoal">0</span>g</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="proteinasBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span class="progress-label">🍚 Carbohidratos</span>
+                            <span class="progress-value"><span id="carbosConsumed">0</span>g / <span id="carbosGoal">0</span>g</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="carbosBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span class="progress-label">🥑 Grasas</span>
+                            <span class="progress-value"><span id="grasasConsumed">0</span>g / <span id="grasasGoal">0</span>g</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="grasasBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span class="progress-label">🥦 Vegetales</span>
+                            <span class="progress-value"><span id="vegetalesConsumed">0</span>g / <span id="vegetalesGoal">0</span>g</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="vegetalesBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="card-title" style="margin-top: 40px;">
+                    <span class="card-icon">🍽️</span>
+                    Mis Comidas del Día
+                </h3>
+                <div id="mealsContainer"></div>
+
+                <div class="info-box" style="margin-top: 20px;">
+                    💡 Ve a "Crear Platos" para añadir comidas a tu día
+                </div>
+            </div>
+        </section>
+
+        <!-- AGUA Section -->
+        <section id="agua" class="content-section">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="card-icon">💧</span>
+                    Seguimiento de Agua
+                </h2>
+
+                <div class="water-tracker">
+                    <div class="result-value" id="waterConsumed">0</div>
+                    <div class="result-label">ml consumidos de <span id="waterGoal">0</span> ml</div>
+
+                    <p style="text-align: center; color: var(--gold); font-size: 1.1em; margin: 20px 0; font-weight: 600;">
+                        👇 Haz clic en los vasos para registrar el agua que bebes
+                    </p>
+
+                    <div class="water-glasses" id="waterGlasses"></div>
+
+                    <button class="btn" onclick="resetWater()">Reiniciar Día</button>
+                </div>
+
+                <div class="info-box">
+                    💡 <strong>Cómo usar:</strong><br>
+                    • Cada vaso representa 250ml (un vaso de agua normal)<br>
+                    • Haz clic en los vasos vacíos para marcarlos como consumidos<br>
+                    • Los vasos se llenarán de color azul automáticamente<br>
+                    • Si te equivocas, haz clic en un vaso lleno para vaciarlo<br>
+                    • Al final del día, usa "Reiniciar Día" para empezar de nuevo
+                </div>
+            </div>
+        </section>
+
+        <!-- PROGRESO Section -->
+        <section id="progreso" class="content-section">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="card-icon">📊</span>
+                    Mi Progreso
+                </h2>
+
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-value"><span id="progressProteinPercent">0</span>%</div>
+                        <div class="result-label">Proteínas</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-value"><span id="progressCarbsPercent">0</span>%</div>
+                        <div class="result-label">Carbohidratos</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-value"><span id="progressFatsPercent">0</span>%</div>
+                        <div class="result-label">Grasas</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-value"><span id="progressVegPercent">0</span>%</div>
+                        <div class="result-label">Vegetales</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-value"><span id="progressWaterPercent">0</span>%</div>
+                        <div class="result-label">Agua</div>
+                    </div>
+                </div>
+
+                <div id="progressStatus" style="margin-top: 30px; text-align: center;">
+                    <h3 class="card-title">
+                        <span id="statusEmoji">🎯</span>
+                        <span id="statusText">Completa tu perfil para ver tu progreso</span>
+                    </h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUPLEMENTOS Section -->
+        <section id="suplementos" class="content-section">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="card-icon">💊</span>
+                    Suplementación Inteligente
+                </h2>
+
+                <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 30px;">
+                    Los suplementos pueden <strong style="color: var(--gold);">aportar muchísimo valor</strong> cuando se combinan con una dieta sana y equilibrada. Son herramientas poderosas que pueden:
+                </p>
+
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">🎯</div>
+                        <div style="color: var(--white); line-height: 1.6;">
+                            Ayudarte a alcanzar tus objetivos más rápido
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">⏰</div>
+                        <div style="color: var(--white); line-height: 1.6;">
+                            Facilitar tu día a día con practicidad
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">💪</div>
+                        <div style="color: var(--white); line-height: 1.6;">
+                            Potenciar tu recuperación y rendimiento
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div style="font-size: 3em; margin-bottom: 15px;">✨</div>
+                        <div style="color: var(--white); line-height: 1.6;">
+                            Complementar tu nutrición de forma eficaz
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-box" style="margin: 30px 0;">
+                    <strong style="font-size: 1.2em;">💡 Clave del éxito:</strong><br>
+                    Los suplementos funcionan mejor cuando se integran en una dieta sana y equilibrada. Son aliados poderosos que, usados correctamente, pueden marcar una gran diferencia en tus resultados.
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <h3 style="color: var(--gold); margin-bottom: 20px; font-size: 1.4em;">
+                        ¿Necesitas recomendaciones específicas?
+                    </h3>
+                    <a href="#contacto" class="btn" onclick="switchTab('contacto')">
+                        Quiero Asesoramiento Personalizado
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACTO Section -->
+        <section id="contacto" class="content-section">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="card-icon">💬</span>
+                    Asesoramiento Personalizado
+                </h2>
+
+                <p style="font-size: 1.2em; line-height: 1.8; margin-bottom: 30px; text-align: center;">
+                    ¿Necesitas un plan adaptado a ti, seguimiento continuo o recomendaciones específicas?<br>
+                    <strong style="color: var(--gold);">Puedo ayudarte.</strong>
+                </p>
+
+                <div class="contact-buttons">
+                    <a href="https://wa.me/" target="_blank" class="contact-btn" id="whatsappContactBtn">
+                        <span class="contact-icon">💬</span>
+                        <span>Contactar por WhatsApp</span>
+                    </a>
+                    <a href="https://www.instagram.com/lux_fit24/" target="_blank" class="contact-btn">
+                        <span class="contact-icon">📸</span>
+                        <span>Escríbeme por Instagram</span>
+                    </a>
+                </div>
+
+                <div style="margin-top: 50px;">
+                    <h3 class="card-title">
+                        <span class="card-icon">✨</span>
+                        ¿Qué puedo ofrecerte?
+                    </h3>
+                    
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <div style="font-size: 2.5em; margin-bottom: 10px;">📋</div>
+                            <div style="color: var(--gold); font-weight: 700; margin-bottom: 10px;">Plan Personalizado</div>
+                            <div style="color: var(--white); font-size: 0.9em;">Adaptado a tu objetivo y estilo de vida</div>
+                        </div>
+                        <div class="result-item">
+                            <div style="font-size: 2.5em; margin-bottom: 10px;">📊</div>
+                            <div style="color: var(--gold); font-weight: 700; margin-bottom: 10px;">Seguimiento</div>
+                            <div style="color: var(--white); font-size: 0.9em;">Acompañamiento continuo por WhatsApp</div>
+                        </div>
+                        <div class="result-item">
+                            <div style="font-size: 2.5em; margin-bottom: 10px;">🍽️</div>
+                            <div style="color: var(--gold); font-weight: 700; margin-bottom: 10px;">Recetas</div>
+                            <div style="color: var(--white); font-size: 0.9em;">Ideas deliciosas y saludables</div>
+                        </div>
+                        <div class="result-item">
+                            <div style="font-size: 2.5em; margin-bottom: 10px;">💊</div>
+                            <div style="color: var(--gold); font-weight: 700; margin-bottom: 10px;">Suplementación</div>
+                            <div style="color: var(--white); font-size: 0.9em;">Recomendaciones personalizadas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Base de datos de alimentos
+        const alimentos = {
+            proteinas: [
+                { nombre: 'Pollo', emoji: '🍗', proteinas: 31, carbos: 0, grasas: 3.6 },
+                { nombre: 'Ternera', emoji: '🥩', proteinas: 26, carbos: 0, grasas: 15 },
+                { nombre: 'Atún', emoji: '🐟', proteinas: 30, carbos: 0, grasas: 1 },
+                { nombre: 'Salmón', emoji: '🐠', proteinas: 25, carbos: 0, grasas: 13 },
+                { nombre: 'Huevos', emoji: '🥚', proteinas: 13, carbos: 1.1, grasas: 11 },
+                { nombre: 'Pavo', emoji: '🦃', proteinas: 29, carbos: 0, grasas: 1 },
+                { nombre: 'Jamón Serrano', emoji: '🥓', proteinas: 30, carbos: 0, grasas: 5 },
+                { nombre: 'Lentejas', emoji: '🫘', proteinas: 9, carbos: 20, grasas: 0.4 },
+                { nombre: 'Garbanzos', emoji: '🫘', proteinas: 8.9, carbos: 27.4, grasas: 2.6 },
+                { nombre: 'Alubias', emoji: '🫘', proteinas: 8.7, carbos: 22.8, grasas: 0.5 },
+                { nombre: 'Otras Proteínas', emoji: '➕', proteinas: 0, carbos: 0, grasas: 0 }
+            ],
+            carbohidratos: [
+                { nombre: 'Arroz', emoji: '🍚', proteinas: 2.7, carbos: 28, grasas: 0.3 },
+                { nombre: 'Pasta', emoji: '🍝', proteinas: 5, carbos: 25, grasas: 0.9 },
+                { nombre: 'Pan', emoji: '🍞', proteinas: 9, carbos: 49, grasas: 3.2 },
+                { nombre: 'Patata', emoji: '🥔', proteinas: 2, carbos: 17, grasas: 0.1 },
+                { nombre: 'Avena', emoji: '🥣', proteinas: 13.2, carbos: 55, grasas: 6.9 },
+                { nombre: 'Quinoa', emoji: '🌾', proteinas: 4.4, carbos: 21, grasas: 1.9 },
+                { nombre: 'Otros Carbohidratos', emoji: '➕', proteinas: 0, carbos: 0, grasas: 0 }
+            ],
+            vegetales: [
+                { nombre: 'Brócoli', emoji: '🥦', proteinas: 2.8, carbos: 7, grasas: 0.4 },
+                { nombre: 'Espinacas', emoji: '🥬', proteinas: 2.9, carbos: 3.6, grasas: 0.4 },
+                { nombre: 'Lechuga', emoji: '🥗', proteinas: 1.4, carbos: 2.9, grasas: 0.2 },
+                { nombre: 'Tomate', emoji: '🍅', proteinas: 0.9, carbos: 3.9, grasas: 0.2 },
+                { nombre: 'Pimiento', emoji: '🫑', proteinas: 1, carbos: 6, grasas: 0.3 },
+                { nombre: 'Zanahoria', emoji: '🥕', proteinas: 0.9, carbos: 10, grasas: 0.2 },
+                { nombre: 'Otros Vegetales', emoji: '➕', proteinas: 0, carbos: 0, grasas: 0 }
+            ],
+            grasas: [
+                { nombre: 'Aguacate', emoji: '🥑', proteinas: 2, carbos: 9, grasas: 15 },
+                { nombre: 'Almendras', emoji: '🥜', proteinas: 21, carbos: 22, grasas: 49 },
+                { nombre: 'Nueces', emoji: '🌰', proteinas: 15, carbos: 14, grasas: 65 },
+                { nombre: 'Aceite Oliva', emoji: '🫒', proteinas: 0, carbos: 0, grasas: 100 },
+                { nombre: 'Otras Grasas', emoji: '➕', proteinas: 0, carbos: 0, grasas: 0 }
+            ],
+            snacks: [
+                { nombre: 'Manzana', emoji: '🍎', proteinas: 0.3, carbos: 14, grasas: 0.2 },
+                { nombre: 'Plátano', emoji: '🍌', proteinas: 1.1, carbos: 23, grasas: 0.3 },
+                { nombre: 'Naranja', emoji: '🍊', proteinas: 0.9, carbos: 12, grasas: 0.1 },
+                { nombre: 'Uvas', emoji: '🍇', proteinas: 0.7, carbos: 17, grasas: 0.2 },
+                { nombre: 'Fresas', emoji: '🍓', proteinas: 0.7, carbos: 8, grasas: 0.3 },
+                { nombre: 'Pan', emoji: '🍞', proteinas: 9, carbos: 49, grasas: 3.2 },
+                { nombre: 'Tostadas', emoji: '🥖', proteinas: 10, carbos: 50, grasas: 4 },
+                { nombre: 'Galletas integrales', emoji: '🍪', proteinas: 7, carbos: 65, grasas: 15 },
+                { nombre: 'Yogur natural', emoji: '🥛', proteinas: 10, carbos: 4, grasas: 3.3 },
+                { nombre: 'Yogur griego', emoji: '🥄', proteinas: 10, carbos: 3.6, grasas: 5 },
+                { nombre: 'Queso fresco', emoji: '🧀', proteinas: 11, carbos: 3, grasas: 4 },
+                { nombre: 'Frutos secos', emoji: '🥜', proteinas: 20, carbos: 20, grasas: 50 },
+                { nombre: 'Chocolate negro', emoji: '🍫', proteinas: 5, carbos: 45, grasas: 30 },
+                { nombre: 'Barrita proteica', emoji: '🍫', proteinas: 20, carbos: 30, grasas: 8 },
+                { nombre: 'Tortitas de arroz', emoji: '🍘', proteinas: 8, carbos: 80, grasas: 3 },
+                { nombre: 'Otros Snacks', emoji: '➕', proteinas: 0, carbos: 0, grasas: 0 }
+            ]
+        };
+
+        // Variables globales
+        let userProfile = {
+            peso: 0,
+            estatura: 0,
+            edad: 0,
+            actividad: 0,
+            objetivo: '',
+            macros: {
+                proteinas: 0,
+                carbohidratos: 0,
+                grasas: 0,
+                vegetales: 0,
+                agua: 0
+            }
+        };
+
+        let dailyMeals = [];
+        let selectedFoods = [];
+        let waterGlasses = 0;
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            initTabs();
+            initFoodGrids();
+            initWaterTracker();
+            loadFromLocalStorage();
+            updateAllDisplays();
+        });
+
+        // Tabs
+        function initTabs() {
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    switchTab(tabName);
+                });
+            });
+        }
+
+        function switchTab(tabName) {
+            // Update active tab
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            
+            // Show section
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Profile Form
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const peso = parseFloat(document.getElementById('peso').value);
+            const estatura = parseFloat(document.getElementById('estatura').value);
+            const edad = parseFloat(document.getElementById('edad').value);
+            const actividad = parseFloat(document.getElementById('actividad').value);
+            const objetivo = document.getElementById('objetivo').value;
+
+            userProfile.peso = peso;
+            userProfile.estatura = estatura;
+            userProfile.edad = edad;
+            userProfile.actividad = actividad;
+            userProfile.objetivo = objetivo;
+
+            // Calcular macros
+            let proteinas, carbohidratos, grasas;
+
+            if (objetivo === 'deficit') {
+                proteinas = peso * 2.2;
+                carbohidratos = peso * 2;
+                grasas = peso * 0.8;
+            } else if (objetivo === 'mantener') {
+                proteinas = peso * 2;
+                carbohidratos = peso * 3;
+                grasas = peso * 1;
+            } else { // surplus
+                proteinas = peso * 2.2;
+                carbohidratos = peso * 4;
+                grasas = peso * 1.2;
+            }
+
+            const vegetales = 400; // Recomendación estándar
+            const agua = peso * 35 * actividad; // ml
+
+            userProfile.macros = {
+                proteinas: Math.round(proteinas),
+                carbohidratos: Math.round(carbohidratos),
+                grasas: Math.round(grasas),
+                vegetales: vegetales,
+                agua: Math.round(agua)
+            };
+
+            displayResults();
+            saveToLocalStorage();
+            updateAllDisplays();
+        });
+
+        function displayResults() {
+            document.getElementById('resultsContainer').classList.remove('hidden');
+            document.getElementById('proteinasResult').textContent = userProfile.macros.proteinas;
+            document.getElementById('carbosResult').textContent = userProfile.macros.carbohidratos;
+            document.getElementById('grasasResult').textContent = userProfile.macros.grasas;
+            document.getElementById('vegetalesResult').textContent = userProfile.macros.vegetales;
+            document.getElementById('aguaResult').textContent = userProfile.macros.agua;
+        }
+
+        // Food Grids
+        function initFoodGrids() {
+            Object.keys(alimentos).forEach(categoria => {
+                const grid = document.getElementById(`${categoria}-grid`);
+                alimentos[categoria].forEach(food => {
+                    const div = document.createElement('div');
+                    div.className = 'food-item';
+                    div.innerHTML = `
+                        <div class="food-emoji">${food.emoji}</div>
+                        <div class="food-name">${food.nombre}</div>
+                    `;
+                    div.addEventListener('click', () => toggleFood(food, div));
+                    grid.appendChild(div);
+                });
+            });
+        }
+
+        function toggleFood(food, element) {
+            const index = selectedFoods.findIndex(f => f.nombre === food.nombre);
+            if (index > -1) {
+                selectedFoods.splice(index, 1);
+                element.classList.remove('selected');
+            } else {
+                // Detectar si es un alimento "Otros" para pedir datos personalizados
+                if (food.nombre.startsWith('Otras') || food.nombre.startsWith('Otros')) {
+                    let categoria = '';
+                    let emoji = '🍽️';
+                    let preguntaPrincipal = '';
+                    
+                    if (food.nombre.includes('Proteínas')) {
+                        categoria = 'proteína';
+                        emoji = '🥩';
+                        preguntaPrincipal = '¿Qué proteína quieres añadir?\n(Ej: Cordero, Seitan, Tofu, Bacalao, etc.)';
+                    } else if (food.nombre.includes('Carbohidratos')) {
+                        categoria = 'carbohidrato';
+                        emoji = '🌾';
+                        preguntaPrincipal = '¿Qué carbohidrato quieres añadir?\n(Ej: Boniato, Cuscús, Pan integral, etc.)';
+                    } else if (food.nombre.includes('Vegetales')) {
+                        categoria = 'vegetal';
+                        emoji = '🥗';
+                        preguntaPrincipal = '¿Qué vegetal quieres añadir?\n(Ej: Calabacín, Berenjena, Pepino, etc.)';
+                    } else if (food.nombre.includes('Grasas')) {
+                        categoria = 'grasa';
+                        emoji = '🥜';
+                        preguntaPrincipal = '¿Qué grasa quieres añadir?\n(Ej: Anacardos, Cacahuetes, Aceite de coco, etc.)';
+                    } else if (food.nombre.includes('Snacks')) {
+                        categoria = 'snack';
+                        emoji = '🍎';
+                        preguntaPrincipal = '¿Qué snack quieres añadir?\n(Ej: Manzana, Barrita, Batido, etc.)';
+                    }
+                    
+                    const nombreCustom = prompt(preguntaPrincipal);
+                    if (!nombreCustom) return; // Cancelado
+                    
+                    const proteinasCustom = parseFloat(prompt(`Proteínas por 100g de ${nombreCustom}:`));
+                    if (isNaN(proteinasCustom)) {
+                        alert('Por favor introduce un número válido');
+                        return;
+                    }
+                    
+                    const carbosCustom = parseFloat(prompt(`Carbohidratos por 100g de ${nombreCustom}:`) || 0);
+                    const grasasCustom = parseFloat(prompt(`Grasas por 100g de ${nombreCustom}:`) || 0);
+                    
+                    // Crear alimento personalizado
+                    const customFood = {
+                        nombre: nombreCustom,
+                        emoji: emoji,
+                        proteinas: proteinasCustom,
+                        carbos: carbosCustom || 0,
+                        grasas: grasasCustom || 0
+                    };
+                    
+                    selectedFoods.push(customFood);
+                    element.classList.add('selected');
+                    
+                    // Mostrar confirmación
+                    alert(`✅ ${nombreCustom} añadido:\nProteínas: ${proteinasCustom}g | Carbos: ${carbosCustom}g | Grasas: ${grasasCustom}g`);
+                } else {
+                    selectedFoods.push(food);
+                    element.classList.add('selected');
+                }
+            }
+        }
+
+        // Plato Form
+        document.getElementById('platoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (selectedFoods.length === 0) {
+                alert('Por favor selecciona al menos un alimento');
+                return;
+            }
+
+            if (!userProfile.macros.proteinas) {
+                alert('Primero completa tu perfil para calcular las cantidades');
+                switchTab('perfil');
+                return;
+            }
+
+            const nombrePlato = document.getElementById('nombrePlato').value;
+            const tipoComida = document.getElementById('tipoComida').value;
+            
+            // Calcular cantidades sugeridas
+            const plato = {
+                nombre: nombrePlato,
+                tipo: tipoComida,
+                alimentos: selectedFoods.map(food => ({
+                    ...food,
+                    cantidad: calcularCantidadSugerida(food)
+                })),
+                timestamp: Date.now()
+            };
+
+            // Añadir a comidas del día
+            dailyMeals.push(plato);
+            saveToLocalStorage();
+
+            // Mostrar resultado
+            displayPlato(plato);
+
+            // Reset form
+            selectedFoods = [];
+            document.querySelectorAll('.food-item').forEach(item => item.classList.remove('selected'));
+            document.getElementById('nombrePlato').value = '';
+            document.getElementById('tipoComida').value = '';
+
+            // Update displays
+            updateAllDisplays();
+        });
+
+        function calcularCantidadSugerida(food) {
+            // Lógica simplificada: distribuir macros entre alimentos seleccionados
+            const numProteinas = selectedFoods.filter(f => f.proteinas > 10).length;
+            const numCarbos = selectedFoods.filter(f => f.carbos > 10).length;
+            
+            if (food.proteinas > 10) {
+                // Es una proteína
+                const proteinasObjetivo = userProfile.macros.proteinas / 3; // Asumiendo 3 comidas
+                return Math.round((proteinasObjetivo / food.proteinas) * 100);
+            } else if (food.carbos > 10) {
+                // Es un carbohidrato
+                const carbosObjetivo = userProfile.macros.carbohidratos / 3;
+                return Math.round((carbosObjetivo / food.carbos) * 100);
+            } else if (food.grasas > 10) {
+                // Es una grasa
+                return Math.round(20); // Cantidad estándar
+            } else {
+                // Vegetales
+                return Math.round(userProfile.macros.vegetales / 3);
+            }
+        }
+
+        function displayPlato(plato) {
+            document.getElementById('platoResultado').classList.remove('hidden');
+            document.getElementById('platoNombreDisplay').textContent = plato.nombre;
+            
+            const container = document.getElementById('platoAlimentos');
+            container.innerHTML = '<div class="results-grid">' + 
+                plato.alimentos.map(a => `
+                    <div class="result-item">
+                        <div style="font-size: 3em; margin-bottom: 10px;">${a.emoji}</div>
+                        <div class="result-value">${a.cantidad}g</div>
+                        <div class="result-label">${a.nombre}</div>
+                    </div>
+                `).join('') + 
+            '</div>';
+        }
+
+        // Water Tracker
+        function initWaterTracker() {
+            const container = document.getElementById('waterGlasses');
+            for (let i = 0; i < 10; i++) {
+                const glass = document.createElement('div');
+                glass.className = 'water-glass';
+                glass.dataset.index = i;
+                glass.addEventListener('click', () => toggleWaterGlass(i));
+                container.appendChild(glass);
+            }
+        }
+
+        function toggleWaterGlass(index) {
+            if (index < waterGlasses) {
+                // Desmarcar desde este índice
+                waterGlasses = index;
+            } else {
+                // Marcar hasta este índice
+                waterGlasses = index + 1;
+            }
+            updateWaterDisplay();
+            saveToLocalStorage();
+        }
+
+        function updateWaterDisplay() {
+            const glasses = document.querySelectorAll('.water-glass');
+            glasses.forEach((glass, i) => {
+                if (i < waterGlasses) {
+                    glass.classList.add('filled');
+                } else {
+                    glass.classList.remove('filled');
+                }
+            });
+
+            const consumed = waterGlasses * 250;
+            document.getElementById('waterConsumed').textContent = consumed;
+            document.getElementById('waterGoal').textContent = userProfile.macros.agua || 2000;
+
+            updateAllDisplays();
+        }
+
+        function resetWater() {
+            waterGlasses = 0;
+            updateWaterDisplay();
+            saveToLocalStorage();
+        }
+
+        // Update All Displays
+        function updateAllDisplays() {
+            updateProgressBars();
+            updateMealsDisplay();
+            updateProgressStats();
+        }
+
+        function updateProgressBars() {
+            // Calcular totales consumidos
+            let totalProteinas = 0, totalCarbos = 0, totalGrasas = 0, totalVegetales = 0;
+
+            dailyMeals.forEach(meal => {
+                meal.alimentos.forEach(food => {
+                    const cantidad = food.cantidad / 100; // Convertir a factor
+                    totalProteinas += food.proteinas * cantidad;
+                    totalCarbos += food.carbos * cantidad;
+                    totalGrasas += food.grasas * cantidad;
+                    
+                    if (food.carbos < 10 && food.proteinas < 10) {
+                        totalVegetales += food.cantidad;
+                    }
+                });
+            });
+
+            // Update displays
+            document.getElementById('proteinasConsumed').textContent = Math.round(totalProteinas);
+            document.getElementById('proteinasGoal').textContent = userProfile.macros.proteinas;
+            document.getElementById('carbosConsumed').textContent = Math.round(totalCarbos);
+            document.getElementById('carbosGoal').textContent = userProfile.macros.carbohidratos;
+            document.getElementById('grasasConsumed').textContent = Math.round(totalGrasas);
+            document.getElementById('grasasGoal').textContent = userProfile.macros.grasas;
+            document.getElementById('vegetalesConsumed').textContent = Math.round(totalVegetales);
+            document.getElementById('vegetalesGoal').textContent = userProfile.macros.vegetales;
+
+            // Update progress bars
+            updateBar('proteinasBar', totalProteinas, userProfile.macros.proteinas);
+            updateBar('carbosBar', totalCarbos, userProfile.macros.carbohidratos);
+            updateBar('grasasBar', totalGrasas, userProfile.macros.grasas);
+            updateBar('vegetalesBar', totalVegetales, userProfile.macros.vegetales);
+        }
+
+        function updateBar(id, consumed, goal) {
+            const bar = document.getElementById(id);
+            const percent = goal > 0 ? Math.min((consumed / goal) * 100, 100) : 0;
+            bar.style.width = percent + '%';
+
+            // Semáforo
+            bar.classList.remove('progress-green', 'progress-yellow', 'progress-red');
+            if (percent >= 80) {
+                bar.classList.add('progress-green');
+            } else if (percent >= 50) {
+                bar.classList.add('progress-yellow');
+            } else {
+                bar.classList.add('progress-red');
+            }
+        }
+
+        function updateMealsDisplay() {
+            const container = document.getElementById('mealsContainer');
+            
+            if (dailyMeals.length === 0) {
+                container.innerHTML = '<div class="info-box">No has registrado comidas aún</div>';
+                return;
+            }
+
+            // Organizar comidas por tipo
+            const tiposComida = {
+                'desayuno': { icono: '🌅', nombre: 'Desayuno', comidas: [] },
+                'almuerzo': { icono: '🍽️', nombre: 'Almuerzo / Comida', comidas: [] },
+                'cena': { icono: '🌙', nombre: 'Cena', comidas: [] },
+                'snack': { icono: '🍎', nombre: 'Snacks', comidas: [] }
+            };
+
+            dailyMeals.forEach((meal, index) => {
+                const tipo = meal.tipo || 'snack';
+                tiposComida[tipo].comidas.push({ ...meal, originalIndex: index });
+            });
+
+            let html = '';
+            Object.keys(tiposComida).forEach(tipo => {
+                const { icono, nombre, comidas } = tiposComida[tipo];
+                if (comidas.length > 0) {
+                    html += `<h4 style="color: var(--gold); margin: 30px 0 15px; font-size: 1.2em;">${icono} ${nombre}</h4>`;
+                    comidas.forEach(meal => {
+                        html += `
+                            <div class="meal-card">
+                                <div class="meal-header">
+                                    <div class="meal-time">${meal.nombre}</div>
+                                    <button class="delete-btn" onclick="deleteMeal(${meal.originalIndex})">Eliminar</button>
+                                </div>
+                                <div class="meal-foods">
+                                    ${meal.alimentos.map(a => `
+                                        <div class="meal-food-tag">${a.emoji} ${a.nombre}: ${a.cantidad}g</div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        function deleteMeal(index) {
+            dailyMeals.splice(index, 1);
+            saveToLocalStorage();
+            updateAllDisplays();
+        }
+
+        function updateProgressStats() {
+            // Calcular totales
+            let totalProteinas = 0, totalCarbos = 0, totalGrasas = 0, totalVegetales = 0;
+
+            dailyMeals.forEach(meal => {
+                meal.alimentos.forEach(food => {
+                    const cantidad = food.cantidad / 100;
+                    totalProteinas += food.proteinas * cantidad;
+                    totalCarbos += food.carbos * cantidad;
+                    totalGrasas += food.grasas * cantidad;
+                    if (food.carbos < 10 && food.proteinas < 10) {
+                        totalVegetales += food.cantidad;
+                    }
+                });
+            });
+
+            const waterConsumed = waterGlasses * 250;
+
+            // Calcular porcentajes
+            const proteinPercent = userProfile.macros.proteinas > 0 ? 
+                Math.round((totalProteinas / userProfile.macros.proteinas) * 100) : 0;
+            const carbsPercent = userProfile.macros.carbohidratos > 0 ? 
+                Math.round((totalCarbos / userProfile.macros.carbohidratos) * 100) : 0;
+            const fatsPercent = userProfile.macros.grasas > 0 ? 
+                Math.round((totalGrasas / userProfile.macros.grasas) * 100) : 0;
+            const vegPercent = userProfile.macros.vegetales > 0 ? 
+                Math.round((totalVegetales / userProfile.macros.vegetales) * 100) : 0;
+            const waterPercent = userProfile.macros.agua > 0 ? 
+                Math.round((waterConsumed / userProfile.macros.agua) * 100) : 0;
+
+            // Update display
+            document.getElementById('progressProteinPercent').textContent = proteinPercent;
+            document.getElementById('progressCarbsPercent').textContent = carbsPercent;
+            document.getElementById('progressFatsPercent').textContent = fatsPercent;
+            document.getElementById('progressVegPercent').textContent = vegPercent;
+            document.getElementById('progressWaterPercent').textContent = waterPercent;
+
+            // Status
+            const avg = Math.round((proteinPercent + carbsPercent + fatsPercent + vegPercent + waterPercent) / 5);
+            let emoji, text;
+
+            if (avg >= 80) {
+                emoji = '🎉';
+                text = '¡Excelente! Vas muy bien hoy';
+            } else if (avg >= 60) {
+                emoji = '👍';
+                text = 'Buen progreso, sigue así';
+            } else if (avg >= 40) {
+                emoji = '⚠️';
+                text = 'Te falta un poco, ¡tú puedes!';
+            } else {
+                emoji = '🔴';
+                text = 'Necesitas comer más para alcanzar tus objetivos';
+            }
+
+            document.getElementById('statusEmoji').textContent = emoji;
+            document.getElementById('statusText').textContent = text;
+        }
+
+        // LocalStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('luxfit_profile', JSON.stringify(userProfile));
+            localStorage.setItem('luxfit_meals', JSON.stringify(dailyMeals));
+            localStorage.setItem('luxfit_water', waterGlasses);
+        }
+
+        function loadFromLocalStorage() {
+            const profile = localStorage.getItem('luxfit_profile');
+            if (profile) {
+                userProfile = JSON.parse(profile);
+                document.getElementById('peso').value = userProfile.peso;
+                document.getElementById('actividad').value = userProfile.actividad;
+                document.getElementById('objetivo').value = userProfile.objetivo;
+                if (userProfile.macros.proteinas > 0) {
+                    displayResults();
+                }
+            }
+
+            const meals = localStorage.getItem('luxfit_meals');
+            if (meals) {
+                dailyMeals = JSON.parse(meals);
+            }
+
+            const water = localStorage.getItem('luxfit_water');
+            if (water) {
+                waterGlasses = parseInt(water);
+                updateWaterDisplay();
+            }
+        }
+
+        // WhatsApp link (añadir tu número aquí)
+        // Ejemplo: https://wa.me/34612345678
+        const whatsappNumber = ''; // AÑADE TU NÚMERO AQUÍ
+        if (whatsappNumber) {
+            const message = encodeURIComponent('Hola! Vengo de la app LuxFit y me gustaría información sobre asesoramiento personalizado');
+            document.getElementById('whatsappBtn').href = `https://wa.me/${whatsappNumber}?text=${message}`;
+            document.getElementById('whatsappContactBtn').href = `https://wa.me/${whatsappNumber}?text=${message}`;
+        }
+    </script>
+</body>
+</html>
